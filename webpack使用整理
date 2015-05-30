@@ -1,0 +1,55 @@
+web应用采用单页面应用思路，用webpack模块化vue文件实现单个DOM结构实现。
+1，github下载webpack示例文件—— vue-loader-example-master
+
+2,webpack使用注意事项:
+(1),改变vue文件中的内容后，需要做“npm run dev”操作更新。
+
+3，webpack结构
+##index.html —— 指定DOM文档流起始位置，调用build.js文件组装DOM结构。
+代码：
+  <div id="app"></div>
+  <script src="build/build.js"></script>
+  
+##components
+  -a.vue
+  -b.vue
+  -...  —— 模块化文件
+代码：
+<style>
+.red {
+  color: #f00;
+}
+</style>
+
+<template>
+  <h2 class="red">{{msg}}</h2>
+</template>
+
+<script>
+module.exports = {
+  data: function () {
+    return {
+      msg: 'Hello from Component A!'
+    }
+  }
+}
+</script>
+  
+## app.vue —— 应用的主模板，对接其他vue文件模块，模块调用声明
+代码：
+<template lang="jade">  //对接其他vue文件模块
+h1 This is the app
+div(v-component="a")
+div(v-component="b")
+div(v-component="test")
+</template>
+
+<script lang="coffee"> //模块调用声明
+module.exports =
+  components:
+    a: require './components/a.vue'
+    b: require './components/b.vue'
+    test: require './components/test.vue'
+</script>
+
+## mian.js —— 
