@@ -52,4 +52,16 @@ module.exports =
     test: require './components/test.vue'
 </script>
 
-## mian.js —— 
+## mian.js —— 调用vue模块，请求主模板，声明新的Vue构造函数，并赋予id为#app
+代码：
+var Vue = require('vue')
+var appOptions = require('./app.vue')
+var app = new Vue(appOptions).$mount('#app')
+
+## webpack.config.js ——参考http://www.tuicool.com/articles/BrAVv2y
+对Webpack的打包行为做了配置，主要分为几个部分：
+entry：指定打包的入口文件，每有一个键值对，就是一个入口文件
+output：配置打包结果，path定义了输出的文件夹，filename则定义了打包结果文件的名称，filename里面的 [name] 会由entry中的键（这里是entry1和entry2）替换
+resolve：定义了解析模块路径时的配置，常用的就是extensions，可以用来指定模块的后缀，这样在引入模块时就不需要写后缀了，会自动补全
+module：定义了对模块的处理逻辑，这里可以用loaders定义了一系列的加载器，以及一些正则。当需要加载的文件匹配test的正则时，就会调用后面的loader对文件进行处理，这正是webpack强大的原因。比如这里定义了凡是 .js 结尾的文件都是用 babel-loader 做处理，而 .jsx 结尾的文件会先经过 jsx-loader 处理，然后经过 babel-loader 处理。当然这些loader也需要通过 npm install 安装
+plugins: 这里定义了需要使用的插件，比如commonsPlugin在打包多个入口文件时会提取出公用的部分，生成common.js
